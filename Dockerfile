@@ -1,9 +1,8 @@
-FROM gcr.io/stacksmith-images/minideb:jessie-r8
+FROM gcr.io/stacksmith-images/minideb:jessie-r9
 MAINTAINER Bitnami <containers@bitnami.com>
 
 ENV BITNAMI_IMAGE_VERSION=1.10.3-r0 \
-    BITNAMI_APP_NAME=nginx \
-    BITNAMI_APP_USER=daemon
+    BITNAMI_APP_NAME=nginx
 
 # System packages required
 RUN install_packages libc6 libpcre3 libssl1.0.0 zlib1g
@@ -19,9 +18,12 @@ COPY rootfs/ /
 ENV NGINX_HTTP_PORT=80 \
     NGINX_HTTPS_PORT=443
 
-ENTRYPOINT ["/app-entrypoint.sh"]
-CMD ["nami", "start", "--foreground", "nginx"]
+VOLUME ["/bitnami/nginx"]
 
 WORKDIR /app
 
 EXPOSE 80 443
+
+ENTRYPOINT ["/app-entrypoint.sh"]
+
+CMD ["nami", "start", "--foreground", "nginx"]
